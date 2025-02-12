@@ -2,37 +2,33 @@ import * as RAPIER from "@dimforge/rapier3d";
 import * as THREE from "three/webgpu";
 
 import { EntitieType, PhysicalDescription } from "../types/PhysicsType";
-import { Game } from "./Game";
 
 export class Physics {
-  private game: Game;
-
   public world: RAPIER.World;
   public gravity: THREE.Vector3;
 
   public entities: EntitieType[];
-  public entitieKey: number;
 
   constructor() {
-    this.game = new Game();
-
     this.gravity = new THREE.Vector3(0, -9.81, 0);
     this.world = new RAPIER.World(this.gravity);
 
+
+    // Contain all colliders
     this.entities = [];
-    this.entitieKey = 0;
   }
 
   addEntity(
     physicalDesc: PhysicalDescription,
     visual: THREE.Mesh,
   ): EntitieType {
+
+    // Create a new Entitie
     const entitie: EntitieType = {
       physics: this.getPhisical(physicalDesc),
       visual,
     };
 
-    this.entitieKey++;
     this.entities.push({
       physics: entitie.physics,
       visual: entitie.visual,
@@ -93,6 +89,7 @@ export class Physics {
   update() {
     this.world.step();
 
+    // Update entities to fit visual and physics entitie
     this.entities.forEach((entitie) => {
       if (entitie.visual) {
         entitie.visual.position.copy(entitie.physics.translation());

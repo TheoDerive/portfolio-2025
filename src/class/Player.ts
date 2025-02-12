@@ -1,5 +1,4 @@
 import * as THREE from "three/webgpu"
-import * as RAPIER from "@dimforge/rapier3d"
 import { Game } from "./Game"
 import { EntitieType } from "../types/PhysicsType"
 
@@ -39,6 +38,7 @@ export class Player{
   updateMovement(){
     const direction = this.game.view.getDirection()
 
+    // Apply the y direction value to the physics y velocity
     const currentVelocity = this.body.physics.linvel()
     direction.y = currentVelocity.y
     

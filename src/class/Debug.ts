@@ -4,16 +4,8 @@ import { Game } from "./Game";
 export class Debug {
   private game: Game;
 
-  public isActive: boolean;
-
   constructor() {
     this.game = new Game();
-
-    this.isActive = false;
-
-    if (window.location.hash === "#debug") {
-      this.isActive = true;
-    }
 
     this.ground();
   }
@@ -29,6 +21,7 @@ export class Debug {
       new THREE.MeshBasicMaterial({ map: texture }),
     );
 
+    // Create the ground mesh
     this.game.physics.addEntity(
       {
         type: "fixed",

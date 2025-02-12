@@ -23,7 +23,9 @@ export class View {
     this.controls = new PointerLockControls(this.camera, this.game.domElement);
 
     window.addEventListener("click", () => {
+      if(this.controls instanceof PointerLockControls){
         this.controls.lock();
+      }
     });
   }
 
@@ -33,10 +35,12 @@ export class View {
   }
 
   getDirection(): THREE.Vector3 {
+    // Init vectors needed
     const direction = new THREE.Vector3(0, 0, 0)
     const frontVector = new THREE.Vector3()
     const sideVector = new THREE.Vector3()
 
+    // Set both directional vectors
     frontVector.set(
       0,
       0,
@@ -50,12 +54,14 @@ export class View {
     )
 
 
+    // Calcul direction 
     direction
       .subVectors(frontVector, sideVector)
       .normalize()
       .multiplyScalar(this.game.player.SPEED)
       .applyEuler(this.camera.rotation)
 
+    // Disable y 
     direction.y = 0
     direction.normalize().multiplyScalar(this.game.player.SPEED)
 

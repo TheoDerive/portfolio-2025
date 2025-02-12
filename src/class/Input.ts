@@ -10,8 +10,6 @@ export class Input {
     this.game = new Game();
 
     this.keys = keys;
-    this.handleKeyUp = this.handleKeyUp.bind(this);
-    this.handleKeyDown = this.handleKeyDown.bind(this);
 
     window.addEventListener("keydown", this.handleKeyDown);
     window.addEventListener("keyup", this.handleKeyUp);
