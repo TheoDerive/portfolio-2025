@@ -7,6 +7,6 @@ export class World {
     this.scene = new THREE.Scene()
   }
 
-  update(){
-  }
+
+  update(){}
 }

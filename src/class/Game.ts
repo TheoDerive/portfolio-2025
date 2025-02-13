@@ -7,6 +7,7 @@ import { View } from "./View";
 import { Viewport } from "./Viewport";
 import { World } from "./World";
 
+
 let instance: null | Game
 
 export class Game {
@@ -24,7 +25,7 @@ export class Game {
 
   constructor() {
     if(instance) return instance;
-    instance = this
+      instance = this
 
     this.domElement = document.querySelector(".game")!;
 
