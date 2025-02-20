@@ -11,11 +11,18 @@ export class Input {
 
     this.keys = keys;
 
+    this.handleKeyUp = this.handleKeyUp.bind(this)
+    this.handleKeyDown = this.handleKeyDown.bind(this)
+
     window.addEventListener("keydown", this.handleKeyDown);
     window.addEventListener("keyup", this.handleKeyUp);
   }
 
   handleKeyDown(event: KeyboardEvent) {
+    if(this.game.player.body.physics.isSleeping()){
+      this.game.player.body.physics.wakeUp()
+    }
+
     if (event.key === "Shift") {
       this.game.player.SPEED *= 2;
     }

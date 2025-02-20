@@ -1,3 +1,5 @@
+import * as THREE from "three"
+
 import { Debug } from "./Debug";
 import { Input } from "./Input";
 import { Physics } from "./Physics";
@@ -41,7 +43,6 @@ export class Game {
     this.view = new View();
     this.player = new Player()
     this.debug = new Debug()
-
   }
 
   update(){
@@ -51,6 +52,7 @@ export class Game {
     this.view.update()
     this.player.update()
 
+    this.debug.debugging()
     this.viewport.update()
   }
 }

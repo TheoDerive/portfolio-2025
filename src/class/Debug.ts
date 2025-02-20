@@ -3,9 +3,17 @@ import { Game } from "./Game";
 
 export class Debug {
   private game: Game;
+  public mesh: THREE.LineSegments;
 
   constructor() {
     this.game = new Game();
+
+    this.mesh = new THREE.LineSegments(
+      new THREE.BufferGeometry(),
+      new THREE.LineBasicMaterial({ color: 0xffffff, vertexColors: true }),
+    );
+    this.mesh.frustumCulled = false;
+    this.game.world.scene.add(this.mesh);
 
     this.ground();
   }
@@ -30,6 +38,7 @@ export class Debug {
           {
             shape: "cuboid",
             parameters: [50, 0.25, 50],
+            isSensor: false
           },
         ],
       },
@@ -37,5 +46,18 @@ export class Debug {
     );
 
     this.game.world.scene.add(mesh);
+  }
+
+  debugging() {
+    const { vertices, colors } = this.game.physics.world.debugRender();
+    this.mesh.geometry.setAttribute(
+      "position",
+      new THREE.BufferAttribute(vertices, 3),
+    );
+    this.mesh.geometry.setAttribute(
+      "color",
+      new THREE.BufferAttribute(colors, 4),
+    );
+    this.mesh.visible = true;
   }
 }

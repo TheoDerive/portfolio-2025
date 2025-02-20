@@ -5,6 +5,7 @@ export class World {
 
   constructor(){
     this.scene = new THREE.Scene()
+
   }
 
   update(){

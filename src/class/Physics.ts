@@ -2,20 +2,29 @@ import * as RAPIER from "@dimforge/rapier3d";
 import * as THREE from "three/webgpu";
 
 import { EntitieType, PhysicalDescription } from "../types/PhysicsType";
+import { Game } from "./Game";
 
 export class Physics {
+  private game: Game
+
   public world: RAPIER.World;
   public gravity: THREE.Vector3;
 
   public entities: EntitieType[];
+  public eventQueue: RAPIER.EventQueue
 
   constructor() {
+    this.game = new Game()
+
     this.gravity = new THREE.Vector3(0, -9.81, 0);
     this.world = new RAPIER.World(this.gravity);
 
 
     // Contain all colliders
     this.entities = [];
+    this.eventQueue = new RAPIER.EventQueue(true)
+
+    this.handleIntersection = this.handleIntersection.bind(this)
   }
 
   addEntity(
@@ -41,7 +50,9 @@ export class Physics {
     let rigidBodyDesc =
       physicalDesc.type === "dynamic"
         ? RAPIER.RigidBodyDesc.dynamic()
-        : RAPIER.RigidBodyDesc.fixed();
+        : physicalDesc.type === "kinematicPositionBased" ?
+          RAPIER.RigidBodyDesc.kinematicPositionBased()
+          : RAPIER.RigidBodyDesc.fixed();
 
     rigidBodyDesc.setTranslation(
       physicalDesc.position.x,
@@ -80,6 +91,15 @@ export class Physics {
 
 
       }
+      
+      if(collider.isSensor){
+        colliderDesc.setSensor(true)
+        colliderDesc.setMass(0)
+      }
+
+      colliderDesc.setActiveEvents(RAPIER.ActiveEvents.COLLISION_EVENTS)
+
+
       this.world.createCollider(colliderDesc, rigidBody);
     });
 
@@ -87,7 +107,8 @@ export class Physics {
   }
 
   update() {
-    this.world.step();
+    this.world.step(this.eventQueue);
+    this.handleIntersection()
 
     // Update entities to fit visual and physics entitie
     this.entities.forEach((entitie) => {
@@ -97,4 +118,21 @@ export class Physics {
       }
     });
   }
+
+  handleIntersection(){
+    this.eventQueue.drainCollisionEvents((first, second, intersection) => {
+      if(intersection){
+        const collider1 = this.world.bodies.get(first)
+        const collider2 = this.world.bodies.get(second)
+
+        if(first === 5e-324 || second === 5e-324){
+          const fingerPointing = this.game.player.collisionEntities.find(collider => collider.name === "fingerPointing")
+
+          if(fingerPointing) fingerPointing.callback(collider2, this.game)
+
+        }
+      }
+    })
+  }
+
 }

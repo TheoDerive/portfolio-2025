@@ -32,6 +32,16 @@ export class View {
   update() {
       this.camera.position.copy(this.game.player.body.visual.position);
       this.camera.position.y = 3;
+//var dist = 10;
+//    var cwd = new THREE.Vector3();
+//
+//    this.camera.getWorldDirection(cwd);
+//
+//    cwd.multiplyScalar(dist);
+//    cwd.add(this.camera.position);
+//
+//    this.mesh.position.set(cwd.x, cwd.y, cwd.z);
+//    this.mesh.setRotationFromQuaternion(this.camera.quaternion);
   }
 
   getDirection(): THREE.Vector3 {

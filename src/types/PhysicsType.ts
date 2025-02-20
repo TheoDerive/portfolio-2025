@@ -2,7 +2,7 @@ import * as THREE from "three"
 import * as RAPIER from "@dimforge/rapier3d"
 
 export type PhysicalDescription = {
-  type: "dynamic" | "fixed",
+  type: "dynamic" | "fixed" | "kinematicPositionBased",
   position: {
     x: number,
     y: number,
@@ -13,7 +13,8 @@ export type PhysicalDescription = {
 
 export type ColliderType = {
   shape: "cuboid" | "capsule" | "ball",
-  parameters: number[]
+  parameters: number[],
+  isSensor: boolean
 }
 
 export type EntitieType = {
