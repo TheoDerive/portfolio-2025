@@ -45,6 +45,7 @@ export class View {
   }
 
   getDirection(): THREE.Vector3 {
+
     // Init vectors needed
     const direction = new THREE.Vector3(0, 0, 0)
     const frontVector = new THREE.Vector3()

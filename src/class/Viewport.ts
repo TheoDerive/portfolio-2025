@@ -21,7 +21,7 @@ export class Viewport {
       height: window.innerHeight
     }
 
-    this.renderer.setSize( window.innerWidth, window.innerHeight)
+    this.renderer.setSize( this.size.width, this.size.height)
     domElement.appendChild(this.renderer.domElement)
   }
 

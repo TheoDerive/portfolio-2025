@@ -8,6 +8,6 @@ export class World {
 
   }
 
-  update(){
-  }
+
+  update(){}
 }
